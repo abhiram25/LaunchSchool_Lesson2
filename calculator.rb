@@ -25,6 +25,7 @@ operation = Kernel.gets().chomp()
 	end
 
 	puts result
+
 		
 
 
