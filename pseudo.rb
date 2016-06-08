@@ -37,20 +37,16 @@ PRINT the RESULT
 =end 
 
 
-a = [2,4,6,9,5,6,7]
+a = [2,4,6,9,5]
 
-def ev_two(array)
-	new_arr = []
-	i = 0
-	while i < array.length
-	 new_arr.push(array[i])
-	 i+=2
-	 end 
-
-	p new_arr
+def even_two(array)
+  new_arr = []
+  array.each_with_index do |item, index|
+    new_arr.push(item) if index.even?
+  end
+  p new_arr
 end
 
-ev_two(a)
 
 
 
