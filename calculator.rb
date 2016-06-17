@@ -1,43 +1,128 @@
-# ask the user for two numbers
-# ask for the type of operation to perform: add, subtract, multiply, and divide
-# perform operation based on the input
-# display the result
-# START
-# PRINT Type the first number
-# GET the first number values and SET it to a variable
-# PRINT Type the second number
-# GET the second number value and SET it to a variable
-# PRINT which operation would you like to perform
-# GET the operation
-# SET result to the following cases
-# IF operation is add, add the two numbers
-# IF operation is subtract, subtract the two numbers
-# IF operation is multiply, multiply the two numbers
-# If operation is divide, turn the numbers into floats and then divide
-# PRINT result
+require 'pry'
 
-Kernel.puts("Type the first number")
+def prompt(message)
+  puts "=> #{message}"
+end
 
-a = gets.chomp
+# def valid_number?(number)
+#   if number =~ /0/
+#     number.to_i
+#   else
+#     number.to_i != 0
+#   end
+# end
 
-Kernel.puts("Type the second number")
 
-b = gets.chomp
+def number?(number)
+  if number.include?(".")
+    number.to_f
+  else
+    number.to_i
+  end
 
-Kernel.puts("Which operation would you like to perform?")
+  if number =~ /0/
+    number.to_i
+  else
+    number.to_i != 0
+  end
+end
 
-operation = gets.chomp
-
-result = case operation
-         when "add"
-           a.to_i + b.to_i
-         when "subtract"
-           a.to_i - b.to_i
-         when "multiply"
-           a.to_i * b.to_i
-         when "divide"
-           a.to_f / b.to_f
+def operation_to_message(op)
+  word = case op
+         when 'add'
+           'Adding'
+         when 'subtract'
+           'Subtracting'
+         when 'multiply'
+           'Multiplying'
+         when 'divide'
+           'Dividing'
          end
 
-Kernel.puts(result)
-  
+  puts word.to_s
+  word
+end
+
+prompt("Welcome to calculator, Enter your name:")
+
+name = ''
+loop do
+  name = gets.chomp
+
+  if name.empty?()
+    puts "Please enter a name"
+  else
+    break
+  end
+end
+
+prompt("Hello #{name}")
+
+loop do
+  number1 = ''
+  loop do
+    prompt("Type the first number")
+    number1 = gets.chomp
+
+    if number?(number1)
+      break
+    else
+      prompt("Not a valid number, try again")
+    end
+  end
+
+  number2 = ''
+
+  loop do
+    prompt("Type the second number")
+    number2 = gets.chomp
+
+    if number?(number2)
+      break
+    else
+      prompt("Not a valid number, try again")
+    end
+  end
+
+  operator_prompt = <<-MSG
+    What operation would you like to perform
+    1) add
+    2) subtract
+    3) multiply
+    4) divide
+  MSG
+
+  prompt(operator_prompt)
+
+  operation = ''
+  loop do
+    operation = gets.chomp
+
+    if %w(add subtract multiply divide).include?(operation)
+      break
+    else
+      prompt("Please type in a valid operation")
+    end
+  end
+
+  prompt("#{operation_to_message(operation)} the two numbers...")
+
+  result = case operation
+           when "add"
+             number1.to_i + number2.to_i
+           when "subtract"
+             number1.to_i - number2.to_i
+           when "multiply"
+             number1.to_i * number2.to_i
+           when "divide"
+             number1.to_f / number2.to_f
+           end
+
+  prompt("The answer is #{result}")
+
+  prompt("Do you want to do another calculation?")
+  decision = gets.chomp
+  break unless decision.downcase.start_with?('y')
+end
+
+prompt("Thank you for using calculator, goodbye!")
