@@ -6,21 +6,29 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def ock?(first, second)
+def ock_wins?(first, second)
   (first.match("ock") && second == "scissors") ||
     ((first == "spock") && second == "rock") ||
-    ((first == "paper") && second.match("ock"))
+  ((first == "rock") && second == "lizard")
 end
 
-def lizard?(first, second)
-  (first.match("i") && second == "paper") ||
-    ((first == "lizard") && second == "spock")
+def paper_wins?(first, second)
+  ((first == "paper") && (second.match("ock")))
+end
+
+def lizard_wins?(first, second)
+  ((first == "lizard") && (second == "spock" || second == "paper"))
+end
+
+def scissors_wins?(first, second)
+  ((first == "scissors") && (second == "paper" || second == "lizard"))
 end
 
 def win?(first, second)
-  ock?(first, second) ||
-    lizard?(first, second) ||
-    ((first == "rock" || first == "scissors") && second == "lizard")
+  ock_wins?(first, second) ||
+    lizard_wins?(first, second) ||
+    paper_wins?(first, second) ||
+    scissors_wins?(first, second)
 end
 
 def display_results(player, computer)
@@ -35,7 +43,7 @@ end
 
 player_score = 0
 computer_score = 0
-winning_score = 5
+WINNING_SCORE = 5
 
 loop do
   choice = ''
@@ -66,7 +74,7 @@ loop do
     end
   end
 
-  computer_choice = %w(rock paper scissors).sample
+  computer_choice = VALID_CHOICE.sample
 
   prompt("You chose #{choice}, computer chose #{computer_choice}")
 
@@ -76,10 +84,12 @@ loop do
 
   computer_score += 1 if win?(computer_choice, choice)
 
-  next unless player_score == winning_score || computer_score == winning_score
+  puts("You: #{player_score} computer: #{computer_score}")
+
+  next unless player_score == WINNING_SCORE || computer_score == WINNING_SCORE
   prompt("")
-  prompt("You won the match") if player_score == winning_score
-  prompt("Computer won the match") if computer_score == winning_score
+  prompt("You won the match") if player_score == WINNING_SCORE
+  prompt("Computer won the match") if computer_score == WINNING_SCORE
   prompt("Would you like to play again")
   player_score = 0
   computer_score = 0
